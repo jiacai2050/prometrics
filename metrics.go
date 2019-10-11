@@ -5,9 +5,7 @@ import "github.com/prometheus/client_golang/prometheus"
 var (
 	// runMetricsCollector / fallbackMetricsCollector share those metric
 	successDuration                *prometheus.HistogramVec
-	successTotal                   *prometheus.CounterVec
 	errFailureDuration             *prometheus.HistogramVec
-	errFailureTotal                *prometheus.CounterVec
 	errConcurrencyLimitRejectTotal *prometheus.CounterVec
 
 	// runMetricsCollector's metrics
@@ -40,27 +38,12 @@ func init() {
 		},
 		[]string{funcTypeLabel, circuitNameLabel},
 	)
-	successTotal = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Namespace: ns,
-			Name:      "success_total",
-		},
-		[]string{funcTypeLabel, circuitNameLabel},
-	)
 
 	errFailureDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Namespace: ns,
 			Name:      "failure_duration_seconds",
 			Help:      "Duration of failed func run",
-		},
-		[]string{funcTypeLabel, circuitNameLabel},
-	)
-	errFailureTotal = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Namespace: ns,
-			Name:      "failure_total",
-			Help:      "Total of failed func run",
 		},
 		[]string{funcTypeLabel, circuitNameLabel},
 	)

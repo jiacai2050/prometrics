@@ -18,13 +18,11 @@ type runMetricsCollector struct {
 // Success sends a success to prometheus
 func (c *runMetricsCollector) Success(now time.Time, duration time.Duration) {
 	successDuration.WithLabelValues(runCmd, c.name).Observe(duration.Seconds())
-	successTotal.WithLabelValues(runCmd, c.name).Inc()
 }
 
 // ErrFailure sends a failure to prometheus
 func (c *runMetricsCollector) ErrFailure(now time.Time, duration time.Duration) {
 	errFailureDuration.WithLabelValues(runCmd, c.name).Observe(duration.Seconds())
-	errFailureTotal.WithLabelValues(runCmd, c.name).Inc()
 }
 
 // ErrTimeout sends a timeout to prometheus
@@ -63,7 +61,6 @@ type fallbackMetricsCollector struct {
 // Success sends a success to prometheus
 func (c *fallbackMetricsCollector) Success(now time.Time, duration time.Duration) {
 	successDuration.WithLabelValues(fallbackCmd, c.name).Observe(duration.Seconds())
-	successTotal.WithLabelValues(fallbackCmd, c.name).Inc()
 }
 
 // ErrConcurrencyLimitReject sends a concurrency-limit to prometheus
@@ -74,8 +71,6 @@ func (c *fallbackMetricsCollector) ErrConcurrencyLimitReject(now time.Time) {
 // ErrFailure sends a failure to prometheus
 func (c *fallbackMetricsCollector) ErrFailure(now time.Time, duration time.Duration) {
 	errFailureDuration.WithLabelValues(fallbackCmd, c.name).Observe(duration.Seconds())
-	errFailureTotal.WithLabelValues(fallbackCmd, c.name).Inc()
-
 }
 
 var _ circuit.FallbackMetrics = (*fallbackMetricsCollector)(nil)
@@ -115,9 +110,7 @@ func GetFactory(r prometheus.Registerer) *CommandFactory {
 	once.Do(func() {
 		r.MustRegister(
 			successDuration,
-			successTotal,
 			errFailureDuration,
-			errFailureTotal,
 			errConcurrencyLimitRejectTotal,
 			errTimeoutDuration,
 			errTimeoutTotal,
