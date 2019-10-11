@@ -10,9 +10,7 @@ var (
 
 	// runMetricsCollector's metrics
 	errTimeoutDuration    *prometheus.HistogramVec
-	errTimeoutTotal       *prometheus.CounterVec
 	errBadRequestDuration *prometheus.HistogramVec
-	errBadRequestTotal    *prometheus.CounterVec
 	errShortCircuitTotal  *prometheus.CounterVec
 
 	// circuitMetricsCollector's metrics
@@ -65,28 +63,12 @@ func init() {
 		},
 		[]string{circuitNameLabel},
 	)
-	errTimeoutTotal = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Namespace: ns,
-			Name:      "timeout_total",
-			Help:      "Total of timeout func run",
-		},
-		[]string{circuitNameLabel},
-	)
 
 	errBadRequestDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Namespace: ns,
 			Name:      "bad_request_duration_seconds",
 			Help:      "Duration of bad request request",
-		},
-		[]string{circuitNameLabel},
-	)
-	errBadRequestTotal = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Namespace: ns,
-			Name:      "bad_request_total",
-			Help:      "Total of bad request request",
 		},
 		[]string{circuitNameLabel},
 	)
@@ -108,6 +90,7 @@ func init() {
 		},
 		[]string{circuitNameLabel},
 	)
+
 	openedTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: ns,

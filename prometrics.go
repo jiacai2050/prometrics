@@ -28,13 +28,11 @@ func (c *runMetricsCollector) ErrFailure(now time.Time, duration time.Duration) 
 // ErrTimeout sends a timeout to prometheus
 func (c *runMetricsCollector) ErrTimeout(now time.Time, duration time.Duration) {
 	errTimeoutDuration.WithLabelValues(c.name).Observe(duration.Seconds())
-	errTimeoutTotal.WithLabelValues(c.name).Inc()
 }
 
 // ErrBadRequest sends a bad request error to prometheus
 func (c *runMetricsCollector) ErrBadRequest(now time.Time, duration time.Duration) {
 	errBadRequestDuration.WithLabelValues(c.name).Observe(duration.Seconds())
-	errBadRequestTotal.WithLabelValues(c.name).Inc()
 }
 
 // ErrInterrupt sends an interrupt error to prometheus
@@ -113,9 +111,7 @@ func GetFactory(r prometheus.Registerer) *CommandFactory {
 			errFailureDuration,
 			errConcurrencyLimitRejectTotal,
 			errTimeoutDuration,
-			errTimeoutTotal,
 			errBadRequestDuration,
-			errBadRequestTotal,
 			errShortCircuitTotal,
 			closedTotal,
 			openedTotal,
