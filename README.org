@@ -1,5 +1,7 @@
 * prometrics
 
+ [[https://travis-ci.org/jiacai2050/prometrics][https://travis-ci.org/jiacai2050/prometrics.svg?branch=master]]
+
 Prometheus metrics collector for [[https://github.com/cep21/circuit][circuit]].
 
 *  Example
@@ -22,11 +24,11 @@ h := circuit.Manager{
 c := h.MustCreateCircuit("hello-world")
 #+END_SRC
 
-Exported metrics can be found [[metrics.go]]. You can also check via
+Exported metrics can be found in [[metrics.go]]. You can also check via
 
 #+BEGIN_SRC bash
 curl 0:8080/metrics | grep circuit
 #+END_SRC
 
 * License
-Same as [[https://github.com/cep21/circuit/blob/master/LICENSE.txt][circuit]].
+[[LICENSE.txt][Apache License 2.0]]

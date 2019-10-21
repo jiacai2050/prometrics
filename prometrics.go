@@ -8,6 +8,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
+// CommandFactory allows ingesting prometheus metrics
 type CommandFactory struct {
 }
 
@@ -80,15 +81,18 @@ type circuitMetricsCollector struct {
 // Closed sets a gauge as closed for the collector
 func (c *circuitMetricsCollector) Closed(now time.Time) {
 	closedTotal.WithLabelValues(c.name).Inc()
+	opened.WithLabelValues(c.name).Set(0)
 }
 
 // Opened sets a gauge as opened for the collector
 func (c *circuitMetricsCollector) Opened(now time.Time) {
 	openedTotal.WithLabelValues(c.name).Inc()
+	opened.WithLabelValues(c.name).Set(1)
 }
 
 var _ circuit.Metrics = (*circuitMetricsCollector)(nil)
 
+// CommandProperties creates prometheus metrics for a circuit
 func (c *CommandFactory) CommandProperties(circuitName string) circuit.Config {
 	return circuit.Config{
 		Metrics: circuit.MetricsCollectors{
@@ -104,6 +108,7 @@ var (
 	inst *CommandFactory
 )
 
+// GetFactory returns a global-shared CommandFactory, with metrics registered into r
 func GetFactory(r prometheus.Registerer) *CommandFactory {
 	once.Do(func() {
 		r.MustRegister(
@@ -115,6 +120,7 @@ func GetFactory(r prometheus.Registerer) *CommandFactory {
 			errShortCircuitTotal,
 			closedTotal,
 			openedTotal,
+			opened,
 		)
 		inst = new(CommandFactory)
 	})

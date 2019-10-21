@@ -16,6 +16,7 @@ var (
 	// circuitMetricsCollector's metrics
 	closedTotal *prometheus.CounterVec
 	openedTotal *prometheus.CounterVec
+	opened      *prometheus.GaugeVec
 )
 
 const (
@@ -96,6 +97,15 @@ func init() {
 			Namespace: ns,
 			Name:      "opened_total",
 			Help:      "Total of circuit transitions from closed to opened",
+		},
+		[]string{circuitNameLabel},
+	)
+
+	opened = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Namespace: ns,
+			Name:      "opened",
+			Help:      "The status of a circuit, 1 opened, 0 closed",
 		},
 		[]string{circuitNameLabel},
 	)
