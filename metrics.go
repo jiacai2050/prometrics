@@ -20,7 +20,7 @@ var (
 )
 
 const (
-	ns               = "circuit"
+	subSystem        = "circuit"
 	circuitNameLabel = "name"
 	funcTypeLabel    = "func"
 
@@ -28,19 +28,21 @@ const (
 	fallbackCmd = "fallback"
 )
 
-func init() {
+func newMetrics(nameSpace string) {
 	successDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "success_duration_seconds",
-			Help:      "Total of successful func run",
+			Help:      "Duration of successful func run",
 		},
 		[]string{funcTypeLabel, circuitNameLabel},
 	)
 
 	errFailureDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "failure_duration_seconds",
 			Help:      "Duration of failed func run",
 		},
@@ -49,7 +51,8 @@ func init() {
 
 	errConcurrencyLimitRejectTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "concurrency_reject_total",
 			Help:      "Total reject requests for reach concurrency limit",
 		},
@@ -58,7 +61,8 @@ func init() {
 
 	errTimeoutDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "timeout_duration_seconds",
 			Help:      "Duration of timeout func run",
 		},
@@ -67,7 +71,8 @@ func init() {
 
 	errBadRequestDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "bad_request_duration_seconds",
 			Help:      "Duration of bad request request",
 		},
@@ -76,7 +81,8 @@ func init() {
 
 	errShortCircuitTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "short_circuit_total",
 			Help:      "Total of runFunc is not called because the circuit was open",
 		},
@@ -85,7 +91,8 @@ func init() {
 
 	closedTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "closed_total",
 			Help:      "Total of circuit transitions from open to closed",
 		},
@@ -94,7 +101,8 @@ func init() {
 
 	openedTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "opened_total",
 			Help:      "Total of circuit transitions from closed to opened",
 		},
@@ -103,7 +111,8 @@ func init() {
 
 	opened = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Namespace: ns,
+			Namespace: nameSpace,
+			Subsystem: subSystem,
 			Name:      "opened",
 			Help:      "The status of a circuit, 1 opened, 0 closed",
 		},
