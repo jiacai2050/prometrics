@@ -111,7 +111,7 @@ var (
 // GetFactory returns a global-shared CommandFactory, with metrics registered into r
 func GetFactory(r prometheus.Registerer) *CommandFactory {
 	once.Do(func() {
-		newMetrics("")
+		initMetrics("")
 		r.MustRegister(
 			successDuration,
 			errFailureDuration,
@@ -131,9 +131,9 @@ func GetFactory(r prometheus.Registerer) *CommandFactory {
 
 // GetFactory returns a global-shared CommandFactory, with metrics registered into r
 // Metrics will be created in particular nameSpace
-func GetFactoryWithNameSpace(r prometheus.Registerer, nameSpace string) *CommandFactory {
+func GetFactoryWithNameSpace(r prometheus.Registerer, namespace string) *CommandFactory {
 	once.Do(func() {
-		newMetrics(nameSpace)
+		initMetrics(namespace)
 		r.MustRegister(
 			successDuration,
 			errFailureDuration,
