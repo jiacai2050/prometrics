@@ -1,6 +1,6 @@
 * prometrics
 
- [[https://travis-ci.org/jiacai2050/prometrics][https://travis-ci.org/jiacai2050/prometrics.svg?branch=master]]
+ [[https://github.com/jiacai2050/prometrics/actions/workflows/test.yml][https://github.com/jiacai2050/prometrics/workflows/test/badge.svg]]
 
 Prometheus metrics collector for [[https://github.com/cep21/circuit][circuit]].
 
